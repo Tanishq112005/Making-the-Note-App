@@ -1,15 +1,53 @@
-from typing import Union
-
-from fastapi import FastAPI
+from fastapi import FastAPI, status
+from fastapi.responses import JSONResponse
+from type import Login_details, Sign_up_details
+from database import checking_in_db, making_new_user
 
 app = FastAPI()
 
+@app.post("/login")
+async def login_page(user_credentials: Login_details):
+    try:
+      
+        result = checking_in_db.get_user_and_create_token(user_credentials)
+    
+        if result['status'] == "user_found":
+            return JSONResponse(status_code=status.HTTP_200_OK, content={
+                "msg": "Success",
+                "jwt_token": result['token']
+            })
+        else:
+      
+            return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={
+                "msg": "Failure",
+                "reason": "User not found or invalid credentials"
+            })
+            
+    except Exception as e:
+      
+        return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={
+            "error": str(e)
+        })
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+@app.post("/sign_up")
+async def sign_up_page(user_details: Sign_up_details):
+    try:
+        result = making_new_user.making_user_and_create_token(user_details)
+        
+        if result['status'] == "user_created":
+  
+            return JSONResponse(status_code=status.HTTP_201_CREATED, content={
+                "msg": "Success",
+                "jwt_token": result['token']
+            })
+        else:
 
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+            return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={
+                "msg": "Failure",
+                "reason": result.get("reason", "User could not be created")
+            })
+            
+    except Exception as e:
+        return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={
+            "error": str(e)
+        })
