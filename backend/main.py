@@ -1,30 +1,39 @@
 from fastapi import FastAPI, status
 from fastapi.responses import JSONResponse
-from type import Login_details, Sign_up_details , Notes
-from database import checking_in_db, making_new_user , creating_notes
+from type import Login_details, Sign_up_details , Notes , Jwt_key_token
+from database import checking_in_db, making_new_user , creating_notes, connection_db , getting_all_notes
 
 app = FastAPI()
+
+# --- Event handlers to manage the database connection pool ---
+@app.on_event("startup")
+async def startup_event():
+    """Create the database connection pool when the app starts."""
+    await connection_db.create_pool()
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Close the database connection pool when the app shuts down."""
+    await connection_db.close_pool()
+
 
 @app.post("/login")
 async def login_page(user_credentials: Login_details):
     try:
       
-        result = checking_in_db.get_user_and_create_token(user_credentials)
+        result = await checking_in_db.get_user_and_create_token(user_credentials)
     
-        if result['status'] == "user_found":
+        if result.get('status') == "user_found":
             return JSONResponse(status_code=status.HTTP_200_OK, content={
                 "msg": "Success",
-                "jwt_token": result['token']
+                "jwt_token": result.get('token')
             })
         else:
-      
             return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={
                 "msg": "Failure",
                 "reason": "User not found or invalid credentials"
             })
-            
     except Exception as e:
-      
         return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={
             "error": str(e)
         })
@@ -32,45 +41,63 @@ async def login_page(user_credentials: Login_details):
 @app.post("/sign_up")
 async def sign_up_page(user_details: Sign_up_details):
     try:
-        result = making_new_user.making_user_and_create_token(user_details)
+ 
+        result = await making_new_user.making_user_and_create_token(user_details)
         
-        if result['status'] == "user_created":
-  
+        if result.get('status') == "user_created":
             return JSONResponse(status_code=status.HTTP_201_CREATED, content={
                 "msg": "Success",
-                "jwt_token": result['token']
+                "jwt_token": result.get('token')
             })
         else:
-
             return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={
                 "msg": "Failure",
                 "reason": result.get("reason", "User could not be created")
             })
-            
     except Exception as e:
         return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={
             "error": str(e)
         })
-        
-        
-# now after creating this we have to create notes app 
-# doing the crud operation 
-# first operation is the create operation getting the data from the frontend about the notes      
+
 @app.post("/creating_notes")
 async def creating_notes_function(notes_detail: Notes):
-       try :
-           result =  creating_notes.creating_notes(notes_detail) 
-           if (result["msg"] == "success"):
-               return JSONResponse(status_code=status.HTTP_201_CREATED , content={
-               "msg" : "Sucess" ,
-               "reason" : "Note is created" 
-           })
-           else :
-                return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST , content={
-               "msg" : "faliure" ,
-               "reason" : "Note is not created" 
-           })
-       except Exception as e:
-           return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR , content = {
-               "error" : str(e) 
-           })    
+    try:
+        
+        result = await creating_notes.creating_notes(notes_detail)
+        
+        if result.get("msg") == "success":
+            return JSONResponse(status_code=status.HTTP_201_CREATED, content={
+                "msg" : "Success",
+                "reason" : "Note is created"
+            })
+        else:
+            return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={
+                "msg" : "failure",
+                "reason" : result.get("reason", "Note is not created")
+            })
+    except Exception as e:
+        return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content = {
+            "error" : str(e)
+        })
+
+
+@app.post("/getting_notes")
+async def getting_notes_function(token : Jwt_key_token):
+    try:
+      
+        result = await getting_all_notes.getting_all_notes(token)
+
+        if result.get("status") == "success":
+            return JSONResponse(status_code=status.HTTP_200_OK , content={
+                "msg" : "Success" ,
+                "data_of_all_notes" : result.get("notes")
+            })
+        else:
+            return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content={
+                "msg" : "failure",
+                "reason" : result.get("reason", "An unknown error occurred")
+            })
+    except Exception as e:
+        return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content = {
+            "error" : str(e)
+        })
