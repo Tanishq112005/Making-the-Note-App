@@ -13,3 +13,11 @@ class Sign_up_details(BaseModel):
     name: str
     email: str
     password: str
+    
+class Notes(BaseModel):
+    title: str
+    description: str 
+    jwt_token: str 
+
+class Jwt_key_token(BaseModel):
+    jwt_token: str        
