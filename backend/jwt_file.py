@@ -1,7 +1,9 @@
 import jwt
-from type import jwt_key_things , Jwt_key_token
-from keys import key_of_jwt as SECRET_KEY
-
+import os
+from type import jwt_key_things
+from dotenv import load_dotenv
+load_dotenv()
+SECRET_KEY = os.getenv("key_of_jwt")
 def creating_jwt_key(data_of_user : jwt_key_things):
     payload = {
         "email" : data_of_user.email,

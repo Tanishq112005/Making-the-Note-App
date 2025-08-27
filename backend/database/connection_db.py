@@ -1,6 +1,8 @@
 import asyncpg
-from keys import connection_string_of_database
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
+connection_string_of_database = os.getenv("connection_string_of_database")
 pool = None
 
 async def create_pool():
