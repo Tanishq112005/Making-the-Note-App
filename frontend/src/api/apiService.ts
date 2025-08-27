@@ -16,10 +16,6 @@ api.interceptors.request.use(
   (config : any) => {
     const token = localStorage.getItem('jwt_token');
     if (token && config.headers) {
-      // Note: Your backend expects the token in the body for most requests,
-      // but it's standard practice to send it in the Authorization header.
-      // If your backend strictly requires it in the body, you'll add it
-      // when you make the specific API call.
       config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;

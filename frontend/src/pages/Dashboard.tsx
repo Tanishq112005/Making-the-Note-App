@@ -18,8 +18,7 @@ const Dashboard: React.FC = () => {
 
   const handleCreateNote = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(createNote({ title, content })).then(() => {
-      // Refetch notes after creation to get the latest list
+    dispatch(createNote({ title : title, description : content })).then(() => {
       dispatch(fetchNotes());
     });
     setTitle('');
@@ -64,9 +63,9 @@ const Dashboard: React.FC = () => {
       <div className="notes-grid">
         {notes && notes.length > 0 ? (
           notes.map((note) => (
-            <div key={note.id} className="note-card">
-              <h3>{note.title}</h3>
-              <p>{note.content}</p>
+            <div key={note.note_id} className="note-card">
+              <h3>{note.note_title}</h3>
+              <p>{note.note_content}</p>
               <div className="note-actions">
                   {/* Update functionality can be added here */}
                   <button className="btn-edit">Edit</button>

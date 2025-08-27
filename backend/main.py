@@ -120,3 +120,5 @@ async def getting_notes_function(token : Jwt_key_token):
         return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content = {
             "error" : str(e)
         })
+        
+        

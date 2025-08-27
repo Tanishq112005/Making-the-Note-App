@@ -1,7 +1,7 @@
 export interface Note {
-    id: string; // Assuming the backend provides an ID for each note
-    title: string;
-    content: string;
+    note_id: number; // Assuming the backend provides an ID for each note
+    note_title: string;
+    note_content: string;
   }
   
   export interface AuthState {

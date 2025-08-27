@@ -8,17 +8,17 @@ const initialState: NotesState = {
   error: null,
 };
 
-// Helper to get the token
+
 const getToken = () => localStorage.getItem('jwt_token');
 
-// Async Thunks
+
 export const fetchNotes = createAsyncThunk(
     'notes/fetchNotes',
     async (_, { rejectWithValue }) => {
         try {
             const token = getToken();
             if (!token) return rejectWithValue('No token found');
-            const response : any = await api.post('/getting_notes', { jwt_key_token: token });
+            const response : any = await api.post('/getting_notes', { jwt_token: token });
             return response.data.data_of_all_notes;
         } catch (error: any) {
             return rejectWithValue(error.response.data.reason || 'Failed to fetch notes');
@@ -28,7 +28,7 @@ export const fetchNotes = createAsyncThunk(
 
 export const createNote = createAsyncThunk(
     'notes/createNote',
-    async (noteData: { title: string; content: string }, { rejectWithValue }) => {
+    async (noteData: { title: string; description: string }, { rejectWithValue }) => {
         try {
             const token = getToken();
             if (!token) return rejectWithValue('No token found');
@@ -41,8 +41,7 @@ export const createNote = createAsyncThunk(
     }
 );
 
-// --- ASSUMED BACKEND ENDPOINTS FOR UPDATE AND DELETE ---
-// Please adjust the endpoint and payload if your backend is different.
+
 
 export const updateNote = createAsyncThunk(
     'notes/updateNote',
@@ -65,7 +64,7 @@ export const deleteNote = createAsyncThunk(
         try {
             const token = getToken();
             if (!token) return rejectWithValue('No token found');
-            // Assuming an endpoint like `/delete_note`
+         
             await api.post('/delete_note', { note_id: noteId, jwt_token: token });
             return noteId;
         } catch (error: any) {
@@ -81,7 +80,6 @@ const notesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            // Fetch Notes
             .addCase(fetchNotes.pending, (state) => {
                 state.loading = true;
             })
@@ -93,19 +91,18 @@ const notesSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload as string;
             })
-            // Create Note
+        
             .addCase(createNote.fulfilled, (state) => {
-                // We will refetch notes in the component for simplicity to ensure data is in sync
+             
                 state.loading = false;
             })
-             // Update Note
+            
             .addCase(updateNote.fulfilled, (state, action: PayloadAction<Note>) => {
                 const index = state.notes.findIndex(note => note.id === action.payload.id);
                 if (index !== -1) {
                     state.notes[index] = action.payload;
                 }
             })
-            // Delete Note
             .addCase(deleteNote.fulfilled, (state, action: PayloadAction<string>) => {
                 state.notes = state.notes.filter(note => note.id !== action.payload);
             });
