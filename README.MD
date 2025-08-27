@@ -112,7 +112,7 @@ The backend provides the following API endpoints:
 -   `POST /login`: Authenticate a user and receive a JWT.
 -   `POST /creating_notes`: Create a new note for the authenticated user.
 -   `POST /getting_notes`: Fetch all notes for the authenticated user.
--   `POST /updatting_notes`:  Update an existing note.
+-   `POST /updating_notes`:  Update an existing note.
 -   `POST /deleting_notes`:  Delete an existing note.
 
 ---
