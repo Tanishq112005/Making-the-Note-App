@@ -9,7 +9,7 @@ const Landing: React.FC = () => {
         <div className="logo">NotesApp</div>
         <div className="nav-links">
           <Link to="/login" className="nav-link">Login</Link>
-          <Link to="/signup"  className="btn btn-primary nav-btn">Sign Up</Link>
+          <Link to="/signup" className="btn btn-primary nav-btn">Sign Up</Link>
         </div>
       </nav>
       <main className="hero-section">
@@ -23,6 +23,10 @@ const Landing: React.FC = () => {
           Get Started for Free
         </Link>
       </main>
+      {/* --- ADDED FOOTER --- */}
+      <footer className="landing-footer">
+        <p>© {new Date().getFullYear()} NotesApp. All rights reserved.</p>
+      </footer>
     </div>
   );
 };
