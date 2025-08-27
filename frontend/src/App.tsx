@@ -1,17 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
+
 import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import SignUp from './pages/Signup';
 import './styles/App.css';
-
+import './index.css'
 const App: React.FC = () => {
   return (
     <Router>
-      <Navbar />
       <main>
         <Routes>
           <Route path="/" element={<Landing />} />

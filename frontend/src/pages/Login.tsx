@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import type { AppDispatch, RootState } from '../app/store';
 import { loginUser } from '../features/auth/authSlice';
-import '../styles/Forms.css';
+import '../styles/Auth.css'; // We will create this new CSS file
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -14,7 +14,7 @@ const Login: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(loginUser({ email : email, password : password }));
+    dispatch(loginUser({ email: email, password: password }));
   };
 
   useEffect(() => {
@@ -24,34 +24,42 @@ const Login: React.FC = () => {
   }, [isAuthenticated, navigate]);
 
   return (
-    <div className="auth-container">
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <h2>Login</h2>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="auth-button" disabled={loading}>
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
-        {error && <p className="error-message">{error}</p>}
-      </form>
+    <div className="auth-wrapper">
+      <div className="auth-card">
+        <h2 className="auth-title">Welcome Back!</h2>
+        <p className="auth-subtitle">Please enter your details to log in.</p>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-primary auth-button" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+          {error && <p className="error-message">{error}</p>}
+        </form>
+        <p className="auth-switch">
+          Don't have an account? <Link to="/signup">Sign Up</Link>
+        </p>
+      </div>
     </div>
   );
 };

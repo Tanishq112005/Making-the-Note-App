@@ -1,59 +1,69 @@
-.auth-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .auth-form h2 {
-    margin-bottom: 1.5rem;
-    color: #2c3e50;
-  }
-  
-  .form-group {
-    margin-bottom: 1rem;
-    text-align: left;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  .auth-button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 4px;
-    background-color: #3498db;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .auth-button:disabled {
-    background-color: #a9d6f5;
-    cursor: not-allowed;
-  }
-  
-  .auth-button:hover:not(:disabled) {
-    background-color: #2980b9;
-  }
-  
-  .error-message {
-    color: #e74c3c;
-    margin-top: 1rem;
-  }
+/* Example Adjustments for Forms.css to align with new theme */
+.auth-form { /* This might be used for Login/SignUp pages */
+  background-color: var(--white);
+  padding: 2.5rem 3rem;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+}
+
+.auth-form h2, .auth-form h3 {
+  color: var(--heading-color);
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.form-group input,
+.form-group textarea { /* Apply consistent styling */
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+}
+
+/* Use the new .btn classes for consistency */
+.auth-button { /* If this is still used for login/signup, keep it, otherwise remove */
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--primary-color);
+  color: var(--text-dark); /* Dark text on yellow */
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.auth-button:hover:not(:disabled) {
+  background-color: darken(var(--primary-color), 10%);
+  transform: translateY(-2px);
+}
+
+.auth-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

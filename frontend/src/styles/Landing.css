@@ -1,0 +1,84 @@
+/* General Wrapper for the Landing Page */
+.landing-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white); /* Clean white background */
+  }
+  
+  /* Navigation Bar */
+  .landing-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 3rem;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--heading-color);
+  }
+  
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .nav-link {
+    text-decoration: none;
+    color: var(--text-light);
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: var(--primary-color);
+  }
+  
+  .nav-btn {
+    padding: 10px 22px;
+    font-weight: 600;
+    color: var(--text-dark);
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+  }
+  
+  /* Hero Section (Main Content) */
+  .hero-section {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .hero-title {
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--heading-color);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    max-width: 800px;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-light);
+    max-width: 600px;
+    margin-bottom: 2.5rem;
+  }
+  
+  .hero-btn {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+  }

@@ -21,3 +21,12 @@ class Notes(BaseModel):
 
 class Jwt_key_token(BaseModel):
     jwt_token: str        
+    
+
+class Notes_changing_details(BaseModel):
+    notes_id : int
+    title:str
+    descripiton : str      
+    
+class Value(BaseModel):
+    note_id : int     

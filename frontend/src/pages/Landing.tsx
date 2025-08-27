@@ -1,20 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/App.css';
+import '../styles/Landing.css'; // We'll create this new CSS file next
 
 const Landing: React.FC = () => {
   return (
-    <div className="container" style={{ textAlign: 'center', marginTop: '100px' }}>
-      <h1>Welcome to NotesApp</h1>
-      <p>Your personal space to write down thoughts and ideas.</p>
-      <div style={{ marginTop: '30px' }}>
-        <Link to="/login" style={{ marginRight: '20px', fontSize: '1.2rem' }}>
-          Login
+    <div className="landing-wrapper">
+      <nav className="landing-nav">
+        <div className="logo">NotesApp</div>
+        <div className="nav-links">
+          <Link to="/login" className="nav-link">Login</Link>
+          <Link to="/signup"  className="btn btn-primary nav-btn">Sign Up</Link>
+        </div>
+      </nav>
+      <main className="hero-section">
+        <h1 className="hero-title">
+          Capture Your Brilliance. <br /> Organize Your Thoughts.
+        </h1>
+        <p className="hero-subtitle">
+          Turn chaos into clarity, one note at a time. Your personal space to think, create, and achieve.
+        </p>
+        <Link to="/signup" className="btn btn-primary hero-btn">
+          Get Started for Free
         </Link>
-        <Link to="/signup" style={{ fontSize: '1.2rem' }}>
-          Sign Up
-        </Link>
-      </div>
+      </main>
     </div>
   );
 };

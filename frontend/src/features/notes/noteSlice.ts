@@ -33,7 +33,6 @@ export const createNote = createAsyncThunk(
             const token = getToken();
             if (!token) return rejectWithValue('No token found');
             await api.post('/creating_notes', { ...noteData, jwt_token: token });
-            // After creating, we return the new note data to be added to the state
             return noteData; 
         } catch (error: any) {
             return rejectWithValue(error.response.data.reason || 'Failed to create note');
@@ -49,8 +48,11 @@ export const updateNote = createAsyncThunk(
         try {
             const token = getToken();
             if (!token) return rejectWithValue('No token found');
-            // Assuming an endpoint like `/update_note`
-            await api.post('/update_note', { ...note, jwt_token: token });
+            await api.post('/updating_notes', {
+                notes_id : note.note_id , 
+                title : note.note_title , 
+                descripiton : note.note_content
+            });
             return note;
         } catch (error: any) {
             return rejectWithValue(error.response.data.reason || 'Failed to update note');
@@ -60,12 +62,9 @@ export const updateNote = createAsyncThunk(
 
 export const deleteNote = createAsyncThunk(
     'notes/deleteNote',
-    async (noteId: string, { rejectWithValue }) => {
+    async (noteId: number, { rejectWithValue }) => {
         try {
-            const token = getToken();
-            if (!token) return rejectWithValue('No token found');
-         
-            await api.post('/delete_note', { note_id: noteId, jwt_token: token });
+            await api.post('/deleting_notes', {note_id: noteId});
             return noteId;
         } catch (error: any) {
             return rejectWithValue(error.response.data.reason || 'Failed to delete note');
@@ -98,13 +97,14 @@ const notesSlice = createSlice({
             })
             
             .addCase(updateNote.fulfilled, (state, action: PayloadAction<Note>) => {
-                const index = state.notes.findIndex(note => note.id === action.payload.id);
+                const index = state.notes.findIndex(note => note.note_id === action.payload.note_id);
                 if (index !== -1) {
                     state.notes[index] = action.payload;
                 }
             })
-            .addCase(deleteNote.fulfilled, (state, action: PayloadAction<string>) => {
-                state.notes = state.notes.filter(note => note.id !== action.payload);
+
+            .addCase(deleteNote.fulfilled, (state, action: PayloadAction<number>) => {
+                state.notes = state.notes.filter(note => note.note_id !== action.payload);
             });
     },
 });

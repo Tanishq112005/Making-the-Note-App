@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import type { AppDispatch, RootState } from '../app/store';
 import { signUpUser } from '../features/auth/authSlice';
-import '../styles/Forms.css';
+import '../styles/App.css'; // We will use the same new CSS file
 
 const SignUp: React.FC = () => {
   const [name, setName] = useState('');
@@ -15,7 +15,7 @@ const SignUp: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(signUpUser({ name : name, email : email, password: password }));
+    dispatch(signUpUser({ name: name, email: email, password: password }));
   };
   
   useEffect(() => {
@@ -25,44 +25,53 @@ const SignUp: React.FC = () => {
   }, [isAuthenticated, navigate]);
 
   return (
-    <div className="auth-container">
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <h2>Create Account</h2>
-        <div className="form-group">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="auth-button" disabled={loading}>
-          {loading ? 'Signing up...' : 'Sign Up'}
-        </button>
-        {error && <p className="error-message">{error}</p>}
-      </form>
+    <div className="auth-wrapper">
+      <div className="auth-card">
+        <h2 className="auth-title">Create an Account</h2>
+        <p className="auth-subtitle">Start organizing your thoughts today.</p>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="name">Name</label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Minimum 8 characters"
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-primary auth-button" disabled={loading}>
+            {loading ? 'Creating Account...' : 'Sign Up'}
+          </button>
+          {error && <p className="error-message">{error}</p>}
+        </form>
+        <p className="auth-switch">
+          Already have an account? <Link to="/login">Log In</Link>
+        </p>
+      </div>
     </div>
   );
 };

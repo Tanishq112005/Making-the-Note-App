@@ -3,14 +3,12 @@ from fastapi.responses import JSONResponse
 # Import the CORSMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
-from type import Login_details, Sign_up_details , Notes , Jwt_key_token
-from database import checking_in_db, making_new_user , creating_notes, connection_db , getting_all_notes
+from type import Login_details, Sign_up_details , Notes , Jwt_key_token , Notes_changing_details , Value
+from database import checking_in_db, making_new_user , creating_notes, connection_db , getting_all_notes , deleting_notes , updating_notes
 
 app = FastAPI()
 
-# --- CORS MIDDLEWARE SETUP ---
-# This is the new section you need to add.
-# It allows your React app (e.g., from http://localhost:3000) to make requests to this backend.
+
 
 origins = [
     "http://localhost",
@@ -28,7 +26,6 @@ app.add_middleware(
 # -----------------------------
 
 
-# --- Event handlers to manage the database connection pool ---
 @app.on_event("startup")
 async def startup_event():
     """Create the database connection pool when the app starts."""
@@ -121,4 +118,45 @@ async def getting_notes_function(token : Jwt_key_token):
             "error" : str(e)
         })
         
+
+@app.post("/deleting_notes")
+async def deleting_notes_function(note_id : Value):
+    try:
+        result = await deleting_notes.deleting_function(note_id.note_id)
+        if(result.get("msg") == "success"):
+            return JSONResponse(status_code=status.HTTP_200_OK , content={
+                "msg" : "Success"
+            })
+        else:
+             return JSONResponse(status_code = status.HTTP_400_BAD_REQUEST, content={
+                "msg" : "Failure" , 
+                "reson" : result.get("reason")
+            })
+            
+    except Exception as e:
+        return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR , content = {
+            "error" : str(e)
+        })            
+        
+@app.post("/updating_notes")
+async def updating_notes_function(notes_details : Notes_changing_details):
+    try:
+        result = await updating_notes.updating_notes(notes_details) 
+        if(result.get("msg") == "success"):
+             return JSONResponse(status_code=status.HTTP_200_OK , content={
+                "msg" : "Success"
+            })
+        else:
+              return JSONResponse(status_code = status.HTTP_400_BAD_REQUEST, content={
+                "msg" : "Failure" , 
+                "reson" : result.get("reason")
+            })
+    except Exception as e:
+           return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR , content = {
+            "error" : str(e)
+        }) 
+           
+           
+                       
+            
         
