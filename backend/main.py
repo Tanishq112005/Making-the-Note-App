@@ -14,6 +14,7 @@ origins = [
     "http://localhost",
     "http://localhost:5173", # The default port for React development server
     "http://127.0.0.1:8000",
+    "https://notesapp-umber.vercel.app"
 ]
 
 app.add_middleware(

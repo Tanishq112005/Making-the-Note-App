@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import type { AppDispatch, RootState } from '../app/store';
 import { loginUser } from '../features/auth/authSlice';
-import '../styles/Auth.css'; // We will create this new CSS file
+import '../styles/Auth.css'; 
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');

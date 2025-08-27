@@ -1,12 +1,12 @@
-/* General Wrapper for the Landing Page */
+
 .landing-wrapper {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: var(--white); /* Clean white background */
+    background-color: var(--white); 
   }
   
-  /* Navigation Bar */
+  
   .landing-nav {
     display: flex;
     justify-content: space-between;
@@ -48,7 +48,7 @@
     box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
   }
   
-  /* Hero Section (Main Content) */
+
   .hero-section {
     flex-grow: 1;
     display: flex;

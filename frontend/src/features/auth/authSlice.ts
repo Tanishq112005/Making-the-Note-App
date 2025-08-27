@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/tool
 import api from '../../api/apiService';
 import {type  AuthState } from '../../types';
 
-// Get token from localStorage if it exists
+
 const token = localStorage.getItem('jwt_token');
 
 const initialState: AuthState = {
@@ -12,7 +12,6 @@ const initialState: AuthState = {
   error: null,
 };
 
-// Async Thunk for User Login
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (credentials: { email: string; password: string }, { rejectWithValue } : any) => {
@@ -26,7 +25,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// Async Thunk for User Sign Up
+
 export const signUpUser = createAsyncThunk(
   'auth/signUpUser',
   async (details: { name: string; email: string; password: string }, { rejectWithValue } : any) => {

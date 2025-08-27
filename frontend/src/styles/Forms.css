@@ -1,5 +1,4 @@
-/* Example Adjustments for Forms.css to align with new theme */
-.auth-form { /* This might be used for Login/SignUp pages */
+.auth-form { 
   background-color: var(--white);
   padding: 2.5rem 3rem;
   border-radius: 12px;
@@ -27,7 +26,7 @@
 }
 
 .form-group input,
-.form-group textarea { /* Apply consistent styling */
+.form-group textarea { 
   width: 100%;
   padding: 12px 15px;
   border: 1px solid #ddd;
@@ -44,14 +43,14 @@
   box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
 }
 
-/* Use the new .btn classes for consistency */
-.auth-button { /* If this is still used for login/signup, keep it, otherwise remove */
+
+.auth-button { 
   width: 100%;
   padding: 14px;
   border: none;
   border-radius: 8px;
   background-color: var(--primary-color);
-  color: var(--text-dark); /* Dark text on yellow */
+  color: var(--text-dark);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;

@@ -1,60 +1,66 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom'; 
 import type { AppDispatch, RootState } from '../app/store';
 import { createNote, fetchNotes, deleteNote, updateNote } from '../features/notes/noteSlice'; 
+import { logout } from '../features/auth/authSlice'; 
 import '../styles/Notes.css';
 import '../styles/Forms.css';
-import { RxCross2 } from 'react-icons/rx'; // Import the close icon
-import { FaPlus } from 'react-icons/fa'; // Import the plus icon
+import { RxCross2 } from 'react-icons/rx'; 
+import { FaPlus } from 'react-icons/fa';
+import { FiLogOut } from 'react-icons/fi'; 
 import type { Note } from '../types';
 
 const Dashboard: React.FC = () => {
-  // State for the create note form
+
   const [newNoteTitle, setNewNoteTitle] = useState('');
   const [newNoteContent, setNewNoteContent] = useState('');
 
-  // State for controlling the 'create new note' modal
+  
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  // State for controlling the 'edit note' modal
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  // State to hold the note currently being edited
+ 
   const [editingNote, setEditingNote] = useState<Note | null>(null);
 
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const { notes, loading, error } = useSelector((state: RootState) => state.notes);
 
   useEffect(() => {
     dispatch(fetchNotes());
   }, [dispatch]);
 
-  // --- Create Note Functions ---
+  const handleLogout = () => {
+    dispatch(logout()); 
+    navigate("/");     
+  };
+
   const handleOpenCreateModal = () => {
     setIsCreateModalOpen(true);
   };
 
   const handleCloseCreateModal = () => {
     setIsCreateModalOpen(false);
-    setNewNoteTitle(''); // Clear form on close
-    setNewNoteContent(''); // Clear form on close
+    setNewNoteTitle('');
+    setNewNoteContent('');
   };
 
   const handleCreateNote = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newNoteTitle.trim() || !newNoteContent.trim()) return; // Basic validation
-    // Assuming your createNote payload uses 'title' and 'description'
+    if (!newNoteTitle.trim() || !newNoteContent.trim()) return;
     dispatch(createNote({ title: newNoteTitle, description: newNoteContent })).then(() => {
-      dispatch(fetchNotes()); // Refetch notes after creation
+      dispatch(fetchNotes());
     });
-    handleCloseCreateModal(); // Close modal after creation
+    handleCloseCreateModal();
   };
 
   const handleDeleteNote = (id: number) => {
     dispatch(deleteNote(id));
   };
 
-  // --- Edit Note Modal Functions ---
+
   const handleOpenEditModal = (note: Note) => {
     setEditingNote(note);
     setIsEditModalOpen(true);
@@ -82,9 +88,9 @@ const Dashboard: React.FC = () => {
       <div className="dashboard-container">
         <header className="dashboard-header">
           <h1>My Notes</h1>
-          {/* Floating Action Button for adding notes */}
-          <button className="add-note-fab" onClick={handleOpenCreateModal} title="Add New Note">
-            <FaPlus size={24} />
+          <button className="logout-btn" onClick={handleLogout} title="Logout">
+            <span>Logout</span>
+            <FiLogOut size={22} />
           </button>
         </header>
         
@@ -113,8 +119,14 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* --- CREATE NEW NOTE MODAL --- */}
+     
+      <button className="add-note-fab" onClick={handleOpenCreateModal} title="Add New Note">
+        <FaPlus size={24} />
+      </button>
+
+      
       {isCreateModalOpen && (
+ 
         <div className="modal-overlay">
           <div className="modal-content">
             <button className="modal-close-btn" onClick={handleCloseCreateModal}>
@@ -150,8 +162,9 @@ const Dashboard: React.FC = () => {
         </div>
       )}
 
-      {/* --- EDIT NOTE MODAL --- */}
+
       {isEditModalOpen && editingNote && (
+       
         <div className="modal-overlay">
           <div className="modal-content">
             <button className="modal-close-btn" onClick={handleCloseEditModal}>

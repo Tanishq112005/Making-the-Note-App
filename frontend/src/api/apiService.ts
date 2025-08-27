@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-// Replace with your actual backend URL
+
 const API_URL = 'http://127.0.0.1:8000';
 
 const api = axios.create({
@@ -11,7 +11,7 @@ const api = axios.create({
   },
 });
 
-// Optional: Interceptor to add the JWT token to every request
+
 api.interceptors.request.use(
   (config : any) => {
     const token = localStorage.getItem('jwt_token');
