@@ -13,7 +13,7 @@ async def getting_all_notes(token: Jwt_key_token):
 
     if decoded_token:
         owner_id = decoded_token.get('id')
-        sql = "SELECT note_title, note_content FROM notes WHERE note_owner_id = $1"
+        sql = "SELECT note_id , note_title, note_content FROM notes WHERE note_owner_id = $1"
 
         try:
             async with connection_db.pool.acquire() as conn:
@@ -27,3 +27,5 @@ async def getting_all_notes(token: Jwt_key_token):
             return {"status": "failure", "reason": str(e)}
 
     return {"status": "failure", "reason": "Invalid token"}
+
+

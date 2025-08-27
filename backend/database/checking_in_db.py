@@ -21,7 +21,6 @@ async def get_user_and_create_token(details: Login_details):
         user_id = user_data_record['user_id']
         user_email = user_data_record['user_email']
         user_name = user_data_record['user_name']
-    
         user_data_for_jwt = jwt_key_things(id=user_id, email=user_email, name=user_name)
         jwt_token = creating_jwt_key(user_data_for_jwt)
         
